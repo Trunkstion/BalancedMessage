@@ -1,0 +1,16 @@
+<h1>Mensajes balanceados</h1>
+
+<%= form_tag "/balancedMessage", method: :post do %>
+    <div>
+    <%= label_tag :text, "Mensaje: " %>
+    <%= text_field_tag :message, "" %>
+    <%= submit_tag "Analizar"%>
+    </div>
+<% end %>
+
+<h3>Respuesta: </h3>
+<% if @result == true%>
+    <h3>El mensaje esta balanceado</h3>
+<% elsif @result == false %>
+    <h3>El mensaje esta desbalanceado</h3>
+<% end %>
