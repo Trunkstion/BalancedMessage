@@ -3,7 +3,7 @@
 <%= form_tag "/balancedMessage", method: :post do %>
     <div>
     <%= label_tag :text, "Mensaje: " %>
-    <%= text_field_tag :message, "" %>
+    <%= text_field_tag :message, "" , :pattern => "[a-z:() ]+", :placeholder => "  a-z : () y espaciado", required: true %>
     <%= submit_tag "Analizar"%>
     </div>
 <% end %>
