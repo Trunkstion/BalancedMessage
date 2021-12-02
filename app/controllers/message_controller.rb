@@ -6,16 +6,20 @@ class MessageController < ApplicationController
     def balancedMessage
         str = Array.new
         str = params[:message]
-
         @result = true
         i = 0
-        smile = 0
-        #flag = false
+        smile = -1
+        op = 0
+        cl = 0
+        sad = 0
+        happy = 0
+        
         
         if str == nil || str.length == 0
             @result = true
         else
             str.each_char do |c|
+                smile = smile + 1
                if c == ')' && i == 0
                     @result = false
                     break
@@ -26,40 +30,52 @@ class MessageController < ApplicationController
                             
                         when ')'
                             i -= 1
+                        when ':'
+                            if str.at(smile +1) == '('
+                                str.each_char do |par|
+                                    if par == '('
+                                        op = op + 1
+                                    elsif par == ')'
+                                        cl = cl + 1
+                                    end
+                                end
+                                if op > cl
+                                    sad = sad + 1
+                                elsif op < cl
+                                    happy = happy + 1
+                                end
+
+                            elsif str.at(smile +1) == ')'
+                                str.each_char do |par|
+                                    if par == '('
+                                        op = op + 1
+                                    elsif par == ')'
+                                        cl = cl + 1
+                                    end
+                                end
+                                if op > cl
+                                    sad = sad + 1
+                                elsif op < cl
+                                    happy = happy + 1
+                                end
+                            end
                     end
                 end
             end
         end
 
-        # if @result == false
-        #     render 'index'
-        # elsif i == 0
-        #     @result = true
-        #     render 'index'
-        # else
-        #     @result = false
-        #     render 'index'
-        # end
 
        if i == 0
             @result = true
             render 'index'
-        else
-            str.each_char do |c|
-
-                if (c == ':' && str.at(smile + 1) == ')') || (c == ':' && str.at(smile + 1) == '(')
-                    @result = true
-                    i == 0
-                end
-                smile += 1
-            end
+       elsif (i == sad) || (i == happy)
+            @result = true
+            render 'index'
+       else
             if i > 0
                 @result = false
                 render 'index'  
-            end
-            
+            end      
         end
-
-        
     end
 end
